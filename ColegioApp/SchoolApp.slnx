@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ColegioApi/SchoolApi.csproj" />
+  <Project Path="ColegioApplication/SchoolApplication.csproj" />
+  <Project Path="ColegioData/SchoolData.csproj" />
+  <Project Path="ColegioDomain/SchoolDomain.csproj" />
+</Solution>
