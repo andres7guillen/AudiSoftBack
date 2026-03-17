@@ -2,10 +2,11 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using SchoolData.Context;
+using SchoolDomain.Repositories;
 
 namespace SchoolApplication.Repositories;
 
-public class ProfessorRepository
+public class ProfessorRepository : IProfessorRepository
 {
     private readonly SchoolDbContext _context;
 
@@ -44,6 +45,21 @@ public class ProfessorRepository
         return Professor == null
             ? Maybe.None
             : Maybe.From(Professor);
+    }
+
+    public async Task<(IEnumerable<Professor>, int totalCount)> GetPaged(int page, int pageSize)
+    {
+        var query = _context.Professors.AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(x => x.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
     }
 
     public async Task<Result<bool>> UpdateAsync(Professor Professor)

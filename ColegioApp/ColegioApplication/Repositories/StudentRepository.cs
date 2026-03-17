@@ -47,6 +47,21 @@ public class StudentRepository : IStudentRepository
             : Maybe.From(student);
     }
 
+    public async Task<(IEnumerable<Student>, int totalCount)> GetPaged(int page, int pageSize)
+    {
+        var query = _context.Students.AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderBy(x => x.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
     public async Task<Result<bool>> UpdateAsync(Student student)
     {
         _context.Students.Update(student);
