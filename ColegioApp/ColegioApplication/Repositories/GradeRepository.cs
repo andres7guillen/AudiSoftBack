@@ -66,6 +66,25 @@ public class GradeRepository : IGradeRepository
             : Maybe.From(grade);
     }
 
+    public async Task<(IEnumerable<Grade>, int totalCount)> GetPaged(int page, int pageSize)
+    {
+        var query = _context.Grades
+             .AsNoTracking()
+             .AsQueryable();
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Include(x => x.Student)
+            .Include(x => x.Professor)
+            .OrderBy(x => x.Name)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
     public async Task<Result<bool>> UpdateAsync(Grade grade)
     {
         _context.Grades.Update(grade);

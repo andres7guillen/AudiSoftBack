@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="ColegioApi/SchoolApi.csproj" />
+  <Project Path="Api/SchoolApi.csproj" Id="81f9de83-95eb-4357-ae58-f5f0bbfd2adb" />
   <Project Path="ColegioApplication/SchoolApplication.csproj" />
   <Project Path="ColegioData/SchoolData.csproj" />
   <Project Path="ColegioDomain/SchoolDomain.csproj" />
