@@ -3,4 +3,5 @@
   <Project Path="ColegioApplication/SchoolApplication.csproj" />
   <Project Path="ColegioData/SchoolData.csproj" />
   <Project Path="ColegioDomain/SchoolDomain.csproj" />
+  <Project Path="SchoolTest/SchoolTest.csproj" Id="a3d04da8-92c8-4ed5-9e4a-dbd2f7315d3c" />
 </Solution>
