@@ -19,7 +19,7 @@ public class CreateProfessorCommandHandler : IRequestHandler<CreateProfessorComm
         var result = Professor.Create(request.Name);
 
         if (!result.IsSuccess)
-            throw new Exception(result.Error);
+            return Result.Failure<Professor>(result.Error);
 
         return await _repository.AddAsync(result.Value);
     }

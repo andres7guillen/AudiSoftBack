@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using ColegioDomain.Entities.Business;
+using CSharpFunctionalExtensions;
 using MediatR;
 using SchoolDomain.Repositories;
 
@@ -26,7 +27,7 @@ public class UpdateStudentCommandHandler
         var result = student.Value.UpdateName(request.Name);
 
         if (!result.IsSuccess)
-            throw new Exception(result.Error);
+            return Result.Failure<bool>(result.Error);
 
         return await _repository.UpdateAsync(student.Value);
     }

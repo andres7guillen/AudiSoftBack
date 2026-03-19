@@ -29,7 +29,7 @@ public class CreateGradeCommandHandler
             request.Value);
 
         if (!result.IsSuccess)
-            throw new Exception(result.Error);
+            return Result.Failure<Grade>(result.Error);
 
         return await _repository.AddAsync(result.Value);
     }
