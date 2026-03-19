@@ -23,29 +23,37 @@ public class StudentsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateStudentCommand command)
     {
-        var id = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetById), new { id }, id);
+        var result = await _mediator.Send(command);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(result.Error);
     }
 
     [HttpPut]
     public async Task<IActionResult> Update(UpdateStudentCommand command)
     {
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return result.IsSuccess
+            ? NoContent()
+            : BadRequest(result.Error);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _mediator.Send(new DeleteStudentCommand(id));
-        return result.Value ? Ok(result.Value) : NotFound();
+        return result.IsSuccess 
+            ? Ok(result.Value) 
+            : BadRequest(result.Error);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var student = await _mediator.Send(new GetStudentByIdQuery(id));
-        return Ok(student);
+        return student.HasValue
+            ? Ok(student.Value)
+            : NotFound("Student not found");
     }
 
     [HttpGet]
@@ -56,6 +64,8 @@ public class StudentsController : ControllerBase
         var result = await _mediator.Send(
             new GetStudentsQuery(page, pageSize));
 
-        return Ok(result);
+        return result.TotalCount > 0
+            ? Ok(result)
+            : NotFound("No students found");
     }
 }

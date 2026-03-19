@@ -4,6 +4,4 @@ using MediatR;
 
 namespace SchoolApplication.Commands.UpdateGrade;
 
-public record UpdateGradeCommand(
-    Grade grade,
-    decimal Value) : IRequest<Result<bool>>;
+public record UpdateGradeCommand(Guid Id,string Name,Guid ProfessorId,Guid StudentId,double Value) : IRequest<Result<bool>>;

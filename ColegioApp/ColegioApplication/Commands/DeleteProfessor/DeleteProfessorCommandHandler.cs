@@ -27,7 +27,7 @@ public class DeleteProfessorCommandHandler : IRequestHandler<DeleteProfessorComm
         var hasGrades = await _gradeRepository.AnyByProfessorId(request.Id);
 
         if (hasGrades.Value)
-            Result.Failure<bool>("Cannot delete professor with associated grades");
+            return Result.Failure<bool>("Cannot delete professor with associated grades");
 
         return await _professorRepository.DeleteAsync(professor.Value);
     }

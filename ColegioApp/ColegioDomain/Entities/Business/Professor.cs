@@ -6,6 +6,7 @@ public class Professor
 {
     public Guid Id { get; private set; }
     public string Name { get; private set; }
+    public ICollection<Grade> Grades { get; private set; } = new List<Grade>();
 
     private Professor() { }
 

@@ -60,7 +60,10 @@ public class GradeRepository : IGradeRepository
 
     public async Task<Maybe<Grade>> GetByIdAsync(Guid id)
     {
-        var grade = await _context.Grades.FindAsync(id);
+        var grade = await _context.Grades
+            .Include(g => g.Professor)
+            .Include(g => g.Student)
+            .FirstOrDefaultAsync(g => g.Id == id);
         return grade == null
             ? Maybe.None
             : Maybe.From(grade);

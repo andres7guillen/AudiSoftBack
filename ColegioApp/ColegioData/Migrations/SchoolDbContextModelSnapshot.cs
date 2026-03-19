@@ -35,13 +35,7 @@ namespace SchoolData.Migrations
                     b.Property<Guid>("ProfessorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ProfessorId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("StudentId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Value")
@@ -51,11 +45,7 @@ namespace SchoolData.Migrations
 
                     b.HasIndex("ProfessorId");
 
-                    b.HasIndex("ProfessorId1");
-
                     b.HasIndex("StudentId");
-
-                    b.HasIndex("StudentId1");
 
                     b.ToTable("Grades");
                 });
@@ -92,33 +82,31 @@ namespace SchoolData.Migrations
 
             modelBuilder.Entity("ColegioDomain.Entities.Business.Grade", b =>
                 {
-                    b.HasOne("ColegioDomain.Entities.Business.Professor", null)
-                        .WithMany()
+                    b.HasOne("ColegioDomain.Entities.Business.Professor", "Professor")
+                        .WithMany("Grades")
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("ColegioDomain.Entities.Business.Professor", "Professor")
-                        .WithMany()
-                        .HasForeignKey("ProfessorId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ColegioDomain.Entities.Business.Student", null)
-                        .WithMany()
+                    b.HasOne("ColegioDomain.Entities.Business.Student", "Student")
+                        .WithMany("Grades")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ColegioDomain.Entities.Business.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId1")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Professor");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ColegioDomain.Entities.Business.Professor", b =>
+                {
+                    b.Navigation("Grades");
+                });
+
+            modelBuilder.Entity("ColegioDomain.Entities.Business.Student", b =>
+                {
+                    b.Navigation("Grades");
                 });
 #pragma warning restore 612, 618
         }
