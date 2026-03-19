@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using ColegioDomain.Entities.Business;
+using CSharpFunctionalExtensions;
 using MediatR;
 using SchoolDomain.Repositories;
 
@@ -17,6 +18,10 @@ public class UpdateGradeCommandHandler : IRequestHandler<UpdateGradeCommand,Resu
         UpdateGradeCommand request,
         CancellationToken cancellationToken)
     {
-        return await _repository.UpdateAsync(request.grade);
+        var grade = await _repository.GetByIdAsync(request.Id);
+        if (grade.HasNoValue)
+            return Result.Failure<bool>("Grade not found");
+        grade.Value.Update(request.Name, request.ProfessorId, request.StudentId, request.Value);
+        return await _repository.UpdateAsync(grade.Value);
     }
 }

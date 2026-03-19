@@ -31,22 +31,28 @@ public class ProfessorsController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Update(UpdateProfessorCommand command)
     {
-        await _mediator.Send(command);
-        return NoContent();
+        var result = await _mediator.Send(command);
+        return result.IsSuccess 
+            ? Ok(result.Value)
+            : BadRequest(result.Error);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        await _mediator.Send(new DeleteProfessorCommand(id));
-        return NoContent();
+        var result = await _mediator.Send(new DeleteProfessorCommand(id));
+        return result.IsSuccess 
+            ? Ok(result.Value)
+            : BadRequest(result.Error);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var professor = await _mediator.Send(new GetProfessorByIdQuery(id));
-        return Ok(professor);
+        return professor.HasValue
+            ? Ok(professor.Value)
+            : NotFound("Professor not found");
     }
 
     [HttpGet]
@@ -57,6 +63,8 @@ public class ProfessorsController : ControllerBase
         var result = await _mediator.Send(
             new GetProfessorsQuery(page, pageSize));
 
-        return Ok(result);
+        return result.TotalCount > 0 
+            ? Ok(result)
+            : NotFound("No professors found");
     }
 }

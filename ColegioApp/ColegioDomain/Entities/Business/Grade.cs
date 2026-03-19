@@ -46,6 +46,14 @@ public class Grade
         return Result.Success<Grade>(grade);
     }
 
+    public void Update(string name, Guid professorId, Guid studentId, double value)
+    {
+        Name = name;
+        ProfessorId = professorId;
+        StudentId = studentId;
+        Value = value;
+    }
+
     public Result<bool> UpdateValue(double value)
     {
         if (value < 0 || value > 5)

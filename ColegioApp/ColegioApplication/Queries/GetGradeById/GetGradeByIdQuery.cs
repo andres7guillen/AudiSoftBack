@@ -1,7 +1,7 @@
-﻿using ColegioDomain.Entities.Business;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using MediatR;
+using SchoolApplication.DTOs;
 
 namespace SchoolApplication.Queries.GetGradeById;
 
-public record GetGradeByIdQuery(Guid Id) : IRequest<Maybe<Grade>>;
+public record GetGradeByIdQuery(Guid Id) : IRequest<Maybe<GradeDTO>>;

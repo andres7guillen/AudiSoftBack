@@ -7,6 +7,7 @@ public class Student
     public Guid Id { get; private set; }
     public string Name { get; private set; }
 
+    public ICollection<Grade> Grades { get; private set; } = new List<Grade>();
     private Student() { }
 
     private Student(Guid id, string name)

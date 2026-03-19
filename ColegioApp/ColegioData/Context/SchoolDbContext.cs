@@ -22,19 +22,19 @@ public class SchoolDbContext : DbContext
         modelBuilder.Entity<Professor>()
             .HasKey(x => x.Id);
 
-        modelBuilder.Entity<Grade>()
-            .HasKey(x => x.Id);
+        modelBuilder.Entity<Grade>(entity =>
+        {
+            entity.HasKey(g => g.Id);
 
-        modelBuilder.Entity<Grade>()
-            .HasOne<Student>()
-            .WithMany()
-            .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(g => g.Professor)
+                .WithMany(p => p.Grades)
+                .HasForeignKey(g => g.ProfessorId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Grade>()
-            .HasOne<Professor>()
-            .WithMany()
-            .HasForeignKey(x => x.ProfessorId)
-            .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(g => g.Student)
+                .WithMany(s => s.Grades)
+                .HasForeignKey(g => g.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }
